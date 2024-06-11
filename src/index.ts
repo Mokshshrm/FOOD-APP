@@ -15,7 +15,7 @@ export const startServer = async () => {
 if (require.main === module) {
     startServer()
 }
-else {
+else {   
     require.main = module;
 }
 
