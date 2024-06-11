@@ -1,0 +1,9 @@
+# Node modules
+node_modules/
+
+# npm package lock file
+package-lock.json
+ 
+
+# configue
+src/config/index.ts
