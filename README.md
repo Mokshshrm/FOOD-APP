@@ -1,5 +1,13 @@
-<<<<<<< HEAD
+for running the process creat index.ts in configue directory
+and add this values 
 
-=======
-# FOOD-APP
->>>>>>> 7587c146a897cec035df562fefb29bffa7db6438
+
+// MongoDB details :
+const PASSWORD = ""
+const USER_NAME = ""
+const DB_NAME = ""
+export const CONNECTION_STR = ""
+export const APP_SECERET = ""
+export const PORT = process.env.PORT || 5500
+export const AccountSID = ''
+export const authToken = ''
