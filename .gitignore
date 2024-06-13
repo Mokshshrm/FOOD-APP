@@ -4,6 +4,8 @@ node_modules/
 # npm package lock file
 package-lock.json
  
+# env file
+.env
 
 # configue
 src/config/index.ts

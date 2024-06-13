@@ -198,7 +198,7 @@ export const CreateOrder = async (req: Request, res: Response) => {
             const orderId = `${Math.floor(Math.random() * 89999) + 1000}`
 
             // Grab order items request [ { id:xx , unit:xx }]
-            console.log(req.body)
+
             const cart = <[OrderInput]>req.body  //  [ { id:xx , unit:xx }]
 
             let cartItem = Array();
@@ -207,7 +207,6 @@ export const CreateOrder = async (req: Request, res: Response) => {
 
             // Calculate Order Amount:-
             const foods = await Food.find().where('_id').in(cart.map(item => item._id))
-
             foods.map(food => {
                 cart.map(({ _id, unit }) => {
                     if (_id === food.id) {
@@ -227,15 +226,15 @@ export const CreateOrder = async (req: Request, res: Response) => {
                     paymentResponse: '',
                     orderStatus: 'panding'
                 })
-                if(result){
+                // Finally update orders to user account
+                if (result) {
                     profile.orders.push(result);
                     const updatedProfile = await profile.save();
-                    return res.send(updatedProfile)
+                    return res.send(result)
                 }
             }
-            // Finally update orders to user account
         }
-        return res.send({'message':"Error while Order Process"})
+        return res.send({ 'message': "Error while Order Process" })
     }
     catch (e) {
         return res.send(e);
@@ -243,8 +242,30 @@ export const CreateOrder = async (req: Request, res: Response) => {
 
 }
 export const GetOrders = async (req: Request, res: Response) => {
+    try {
 
+        const user = req.user;
+        if (user) {
+            const profile = await Customer.findById(user._id).populate('orders');
+            if (profile) {
+                return res.send(profile.orders);
+            }
+        }
+        return res.send({ 'message': "Error when retrive the info" })
+    }
+    catch (e) {
+        return res.send(e)
+    }
 }
 export const GetOrdersById = async (req: Request, res: Response) => {
-
+    try {
+        const id = req.params.id;
+        if (id) {
+            const order = await Order.findById(id).populate('items.food');
+            return res.send(order)
+        }
+        return res.send({ 'message': 'Error while retriving' })
+    } catch (e) {
+        return res.send(e)
+    }
 }

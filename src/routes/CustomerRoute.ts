@@ -1,4 +1,4 @@
-import express, { Request, Response, NextFunction } from 'express'
+import express  from 'express'
 import { CreateOrder, CustomerLogIn, CustomerSignUp, CustomerVerify, EditCutomerProfile, GetCustomerProfile, GetOrders, GetOrdersById, RequestOTP } from '../controllers';
 import { Authenticate } from '../middlewares';
 
