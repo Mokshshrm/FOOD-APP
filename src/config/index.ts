@@ -1,4 +1,5 @@
-
+const dotenv = require('dotenv')
+dotenv.config();
 // MongoDB details :
 const PASSWORD = process.env.PASSWORD
 const USER_NAME = process.env.USER_NAME
