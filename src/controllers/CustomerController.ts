@@ -224,20 +224,23 @@ export const GetCart = async (req: Request, res: Response) => {
     const user = req.user;
     if (user) {
         const cartItem = await Customer.findById(user._id).populate('cart.food');
-        return res.send(cartItem.cart);
+        if (cartItem.cart.length > 0)
+            return res.send(cartItem.cart);
     }
-    return res.send({ "message": 'Pls login for further more' })
+    return res.send({ "message": 'cart Is empty' })
 }
 
 export const DelteCart = async (req: Request, res: Response) => {
     const user = req.user;
     if (user) {
         const cartItem = await Customer.findById(user._id);
-        cartItem.cart = [] as any;
-        await cartItem.save();
-        return res.send({ 'message': 'Cart ITem successfully delted' });
+        if (cartItem.cart.length > 0) {
+            cartItem.cart = [] as any;
+            await cartItem.save();
+            return res.send({ 'message': 'Cart ITem successfully delted' });
+        }
     }
-    return res.send({ 'message': 'Pls login for further more' })
+    return res.send({ 'message': 'Cart is alredy empty' })
 }
 
 

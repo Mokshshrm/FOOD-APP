@@ -3,7 +3,7 @@ import { EditVandorInputs, VandorLoginInput } from "../dto";
 import { findVandor } from "./AdminController";
 import { GenerateSignature, ValidatePassword } from "../utility";
 import { CreateFoodInput } from "../dto/Food.dto";
-import { Food } from "../models/index"
+import { Food, Order } from "../models/index"
 
 export const vandorLogin = async (req: Request, res: Response) => {
 
@@ -147,5 +147,47 @@ export const GetFoods = async (req: Request, res: Response) => {
     }
     else
         return res.send({ 'message': 'User not Authorized. ' })
+
+}
+
+// order controller
+
+export const GetCurrentOrders = async (req: Request, res: Response, next: NextFunction) => {
+
+    const user = req.user;
+    if (user) {
+        const order = await Order.find({ vandorId: user._id }).populate('items.food').sort([['createdAt', 'ascending']]);
+    }
+    return res.send({ 'messge': 'Order not found' });
+
+}
+
+export const GetOrderDetails = async (req: Request, res: Response, next: NextFunction) => {
+    const orderId = req.params.id;
+    if (orderId) {
+        const order = await Order.findById(orderId).populate('items.food');
+        if (order) {
+            return res.send(order)
+        }
+
+    }
+    return res.send({ 'messge': 'Order not found' });
+}
+export const ProcessOrder = async (req: Request, res: Response, next: NextFunction) => {
+    const orderId = req.params.id;
+    const { status, remarks, time } = req.body; //   ACCEPT // REJECT // UNDER-PROCESS // READY
+    if (orderId) {
+        const order = await Order.findById(orderId).populate('items.food');
+        order.orderStatus = status;
+        order.remarks = remarks;
+        if (time) {
+            order.readyTime = time
+        }
+        const orderResult = await order.save();
+        if (orderResult != null)
+            return res.send(orderResult);
+
+    }
+    return res.send({ 'messagee':'Unable to process Order'})
 
 }
