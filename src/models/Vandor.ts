@@ -1,4 +1,5 @@
 import mongoose, { Schema, Model, Document } from "mongoose";
+import { Fooddoc } from "./Food";
 
 interface VandorDoc extends Document {
     name: string;
@@ -13,7 +14,7 @@ interface VandorDoc extends Document {
     serviceAvailable: boolean;
     converImages: [string];
     rating: number;
-    foods: any;
+    foods: [Fooddoc];
 }
 
 const VandorSchema = new Schema({

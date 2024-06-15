@@ -1,5 +1,5 @@
-import express  from 'express'
-import { CreateOrder, CustomerLogIn, CustomerSignUp, CustomerVerify, EditCutomerProfile, GetCustomerProfile, GetOrders, GetOrdersById, RequestOTP } from '../controllers';
+import express from 'express'
+import { CreateOrder, CustomerLogIn, CustomerSignUp, CustomerVerify, EditCutomerProfile, GetCustomerProfile, GetOrders, GetOrdersById, RequestOTP, DelteCart, GetCart, AddToCart } from '../controllers';
 import { Authenticate } from '../middlewares';
 
 
@@ -33,6 +33,11 @@ Router.patch('/profile', EditCutomerProfile)
 
 
 // Card section :- 
+Router.post('/cart', AddToCart)
+Router.get('/cart', GetCart)
+Router.delete('/cart', DelteCart)
+
+
 
 
 // Payment section :-
@@ -40,9 +45,9 @@ Router.patch('/profile', EditCutomerProfile)
 // Order section :-
 
 
-Router.post('/create-order',CreateOrder)
-Router.get('/orders',GetOrders)
-Router.get('/order/:id',GetOrdersById)
+Router.post('/create-order', CreateOrder)
+Router.get('/orders', GetOrders)
+Router.get('/order/:id', GetOrdersById)
 
 
 export { Router as CustomerRoute };
